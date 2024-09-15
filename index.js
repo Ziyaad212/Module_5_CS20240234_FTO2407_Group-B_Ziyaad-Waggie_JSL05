@@ -12,6 +12,9 @@ const songs = [
     { title: "I'm Not in Love", artist: "10cc", genre: "Pop" },
     { title: "Fooled Around and Fell in Love", artist: "Elvin Bishop", genre: "Rock" },
     // Feel free to add even more songs
+    { title: "The Chain", artist: "Fleetwood Mac", genre: "Rock" },
+    { title: "Staying Alive", artist: "Bee Gees", genre: "Pop" },
+    { title: "September", artist: "Earth, Wind & Fire", genre: "R&B" },
 ];
 
 
@@ -20,15 +23,47 @@ const guardians = {
     "Star-Lord": "Rock",
     "Gamora": "Pop",
     // Add preferences for Drax, Rocket, and Groot
+    "Drax": "R&B",
+    "Rocket": "Rock",
+    "Groot": "Pop"
 };
 
 // Function to generate playlist based on preferred genre
 function generatePlaylist(guardians, songs) {
     // Use the map() function to create playlists for each Guardian
     // Your code here
+    return Object.entries(guardians).map(([guardian, genre]) => {
+        const playlist = songs.filter(song => song.genre === genre);
+        return { guardian, playlist };
+    });
 }
 
-// Call generatePlaylist and display the playlists for each Guardian
-generatePlaylist(guardians, songs);
+function displayPlaylists(playlists) {
+    const playlistsDiv = document.getElementById('playlists');
+    playlistsDiv.innerHTML = '';
 
+    playlists.forEach(({ guardian, playlist }) => {
+       
+        const guardianDiv = document.createElement('div');
+        guardianDiv.classList.add('guardian-playlist');
 
+        const guardianName = document.createElement('h2');
+        guardianName.textContent = `${guardian}'s Awesome Mix Playlist`;
+        guardianDiv.appendChild(guardianName);
+
+        const ul = document.createElement('ul');
+
+        playlist.forEach(song => {
+            const li = document.createElement('li');
+            li.textContent = `${song.title} by ${song.artist}`;
+            ul.appendChild(li);
+        });
+
+        guardianDiv.appendChild(ul);
+
+        playlistsDiv.appendChild(guardianDiv);
+    });
+}
+
+const playlists = generatePlaylist(guardians, songs);
+displayPlaylists(playlists);
